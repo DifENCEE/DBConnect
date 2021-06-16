@@ -47,12 +47,29 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public void updateUser(User user) {
+        String UPDATE = "UPDATE users set (name, surname, age) = (?, ?, ?) WHERE id = ?";
+        try (PreparedStatement statement = jdbcConnector.getConnection().prepareStatement(UPDATE);
+        ) {
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getSurname());
+            statement.setInt(3, user.getAge());
+            statement.setInt(4, user.getId());
 
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void deleteUser(User user) {
-
+    public void deleteUser(int userId) {
+        String DELETE = "DELETE FROM users WHERE id = ?";
+        try (PreparedStatement statement = jdbcConnector.getConnection().prepareStatement(DELETE)) {
+            statement.setInt(1, userId);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

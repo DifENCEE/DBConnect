@@ -10,8 +10,12 @@ import java.sql.Statement;
 public class MainTests {
     public static void main(String[] args) throws SQLException {
         UserDAOImpl userDAO = new UserDAOImpl();
-        User user = new User("vlad", "xxx", 25);
+        User user = new User("another", "test", 25);
+        user.setId(1);
 //        userDAO.createUser(user);
         System.out.println(userDAO.getUser(2));
+        userDAO.deleteUser(5);
+        userDAO.updateUser(user);
+        System.out.println(userDAO.getAllUsers());
     }
 }
