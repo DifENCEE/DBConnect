@@ -1,7 +1,7 @@
 package com.example.essence;
 
 public class User {
-    private int id;
+    public int id;
     public String name;
     public String surname;
     public int age;
