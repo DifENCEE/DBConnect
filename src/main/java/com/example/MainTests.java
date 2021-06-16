@@ -2,8 +2,6 @@ package com.example;
 
 import com.example.databases.JDBCPostgreSQLConnector;
 import com.example.essence.User;
-
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
