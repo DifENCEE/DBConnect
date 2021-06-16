@@ -1,4 +1,4 @@
-package com.example.DBConnect;
+package com.example.servlets;
 
 import java.io.*;
 import javax.servlet.http.*;
