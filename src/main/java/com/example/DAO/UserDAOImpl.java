@@ -1,10 +1,12 @@
 package com.example.DAO;
 
+import com.example.databases.JDBCPostgreSQLConnector;
 import com.example.essence.User;
 
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO{
+    JDBCPostgreSQLConnector jdbcConnector = new JDBCPostgreSQLConnector();
 
     @Override
     public void createUser(User user) {

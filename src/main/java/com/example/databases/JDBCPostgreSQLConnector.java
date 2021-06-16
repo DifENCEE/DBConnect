@@ -9,7 +9,7 @@ public class JDBCPostgreSQLConnector {
     private final String USER = "postgres";
     private final String PASS = "768228sss";
 
-    Connection getConnection() {
+    public Connection getConnection() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
