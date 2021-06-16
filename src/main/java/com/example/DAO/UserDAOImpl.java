@@ -3,6 +3,7 @@ package com.example.DAO;
 import com.example.databases.JDBCPostgreSQLConnector;
 import com.example.essence.User;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,12 +15,34 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public void createUser(User user) {
-
+        String INSERT = "INSERT into users (name, surname, age) values (?, ?, ?)";
+        try (PreparedStatement statement = jdbcConnector.getConnection().prepareStatement(INSERT)) {
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getSurname());
+            statement.setInt(3, user.getAge());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public User getUser(int id) {
-        return null;
+        String SELECT_BY_ID = "SELECT * FROM users WHERE id = ?";
+        User user = new User();
+        try (PreparedStatement statement = jdbcConnector.getConnection().prepareStatement(SELECT_BY_ID)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                user.setId(resultSet.getInt(1));
+                user.setName(resultSet.getString(2));
+                user.setSurname(resultSet.getString(3));
+                user.setAge(resultSet.getInt(4));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override
@@ -37,8 +60,8 @@ public class UserDAOImpl implements UserDAO{
         List<User> usersList = new ArrayList<>();
         String query = "select * from users";
         try {
-            Statement statement = jdbcConnector.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            PreparedStatement statement = jdbcConnector.getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt(1));
