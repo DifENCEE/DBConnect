@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Helloooo mfuckers!</h1><br />
+<h1>Helloooo !</h1><br />
 
 <h2>Все пользователи</h2><br />
 
