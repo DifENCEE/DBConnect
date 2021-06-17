@@ -5,12 +5,12 @@
          version="4.0">
 
     <servlet>
-        <servlet-name>GetStartPageServlet</servlet-name>
+        <servlet-name>HelloServlet</servlet-name>
         <servlet-class>com.example.servlets.HelloServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>GetStartPageServlet</servlet-name>
+        <servlet-name>HelloServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>
