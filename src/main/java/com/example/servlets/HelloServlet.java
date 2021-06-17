@@ -3,7 +3,6 @@ package com.example.servlets;
 import com.example.DAO.UserDAOImpl;
 import com.example.essence.User;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,81 +11,58 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @WebServlet("/")
 public class HelloServlet extends HttpServlet {
     UserDAOImpl userDAO = new UserDAOImpl();
 
+    private final static String index = "/WEB-INF/view/index.jsp";
+
+    private List<User> users;
+
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init() throws ServletException {
+        users = new CopyOnWriteArrayList<>();
+        users.add(new User("Java", 10));
+        users.add(new User("Vision", 20));
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.setAttribute("users", users);
+        req.getRequestDispatcher(index).forward(req, resp);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        List<User> userList = userDAO.getAllUsers();
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-        req.setAttribute("users", userList);
+        req.setCharacterEncoding("UTF8");
 
-        req.getRequestDispatcher("main.jsp").forward(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-
-        switch (action) {
-            case "add":
-                addUserAction(req);
-                break;
-            case "delete":
-                deleteUserAction(req);
-                break;
-            case "update":
-                updateUserAction(req);
-                break;
+        if (!requestIsValid(req)) {
+            doGet(req, resp);
         }
+
+        final String name = req.getParameter("name");
+        final String age = req.getParameter("age");
+
+        final User user = new User(name, Integer.valueOf(age));
+
+        users.add(user);
+
         doGet(req, resp);
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
+    private boolean requestIsValid(final HttpServletRequest req) {
 
-    private void addUserAction(HttpServletRequest req) {
-        User user = null;
+        final String name = req.getParameter("name");
+        final String age = req.getParameter("age");
 
-        int id = Integer.parseInt(req.getParameter("id"));
-        int age = Integer.parseInt(req.getParameter("age"));
-        String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
-
-        if (id < 0) {
-            user = new User(name, surname, age);
-            userDAO.createUser(user);
-        } else {
-            user = new User(id, name, surname, age);
-            userDAO.updateUser(user);
-        }
-    }
-
-    private void updateUserAction(HttpServletRequest req) {
-        int id = Integer.parseInt(req.getParameter("userId"));
-
-        User updateUser = userDAO.getUser(id);
-
-        req.setAttribute("updateUser", updateUser);
-    }
-
-    private void deleteUserAction(HttpServletRequest req) {
-        int userId = Integer.parseInt(req.getParameter("userId"));
-
-        userDAO.deleteUser(userId);
+        return name != null && name.length() > 0 &&
+                age != null && age.length() > 0 &&
+                age.matches("[+]?\\d+");
     }
 }
