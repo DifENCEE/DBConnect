@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Hello from Java Vision!</h1><br />
+<h1>Helloooo mfuckers!</h1><br />
 
 <h2>Все пользователи</h2><br />
 
@@ -22,7 +22,7 @@
 
 </c:forEach>
 
-<h2>Создание нового пользователя</h2><br />
+<h2>Создать нового пользователя</h2><br />
 
 <form method="post" action="">
 
