@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class HelloServlet extends HttpServlet {
     UserDAOImpl userDAO = new UserDAOImpl();
 
-    private final static String index = "/WEB-INF/view/index.jsp";
+    private final static String index = "index.jsp";
 
     private List<User> users;
 
